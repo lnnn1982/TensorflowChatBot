@@ -141,15 +141,16 @@ def train():
     """ Train the bot """
     print('train begin.' + time.ctime() + "," + config.getThreadId())
     
-    test_buckets, data_buckets, train_buckets_scale = _get_buckets()
-    # in train mode, we need to create the backward path, so forwrad_only is False
-    model = ChatBotModel(False, config.BATCH_SIZE)
-    model.build_graph()
-
-    saver = tf.train.Saver()
-
-    with tf.Session() as sess:
-        with tf.device('/gpu:0'):
+    with tf.device('/cpu:0'):
+        test_buckets, data_buckets, train_buckets_scale = _get_buckets()
+        # in train mode, we need to create the backward path, so forwrad_only is False
+        model = ChatBotModel(False, config.BATCH_SIZE)
+        model.build_graph()
+    
+        saver = tf.train.Saver()
+    
+        with tf.Session() as sess:
+            
             print('Running session' + time.ctime() + "," + config.getThreadId())
             sess.run(tf.global_variables_initializer())
             

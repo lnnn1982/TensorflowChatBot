@@ -20,6 +20,7 @@ import time
 
 import numpy as np
 import tensorflow as tf
+import copy
 
 import config
 
@@ -63,19 +64,17 @@ class ChatBotModel(object):
         single_cell = tf.nn.rnn_cell.GRUCell(config.HIDDEN_SIZE)
         #single_cell = tf.contrib.rnn.BasicLSTMCell(config.HIDDEN_SIZE)
         self.cell = tf.nn.rnn_cell.MultiRNNCell([single_cell] * config.NUM_LAYERS)
-        self.cell_enc = tf.nn.rnn_cell.MultiRNNCell([single_cell] * config.NUM_LAYERS)
-        self.cell_dec = tf.nn.rnn_cell.MultiRNNCell([single_cell] * config.NUM_LAYERS)
 
     def _create_loss(self):
         print('Creating loss...begin ' + time.ctime())
         print('It might take a couple of minutes depending on how many buckets you have.')
         start = time.time()
         def _seq2seq_f(encoder_inputs, decoder_inputs, do_decode):
+            tmp_cell = copy.deepcopy(self.cell)
             return tf.contrib.legacy_seq2seq.embedding_attention_seq2seq(
                     encoder_inputs, decoder_inputs, 
-                    self.cell_enc,
-                    self.cell_dec,
                     #self.cell,
+                    tmp_cell,
                     num_encoder_symbols=config.ENC_VOCAB,
                     num_decoder_symbols=config.DEC_VOCAB,
                     embedding_size=config.HIDDEN_SIZE,
