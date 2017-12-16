@@ -1,3 +1,10 @@
+"""
+This is for ECE750 course project.
+Modified by Nan Li. 20171215
+The original code:
+https://github.com/chiphuyen/stanford-tensorflow-tutorials/tree/master/assignments/chatbot
+"""
+
 """ A neural chatbot using sequence to sequence model with
 attentional decoder. 
 
@@ -172,7 +179,7 @@ def train():
                             #summary_op=None,
                             saver=saver,
                             global_step=model.global_step,
-                            save_model_secs=180)    
+                            save_model_secs=60)    
         
         with sv.prepare_or_wait_for_session(server.target) as sess:
             

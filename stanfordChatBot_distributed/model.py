@@ -1,3 +1,10 @@
+"""
+This is for ECE750 course project.
+Modified by Nan Li. 20171215
+The original code:
+https://github.com/chiphuyen/stanford-tensorflow-tutorials/tree/master/assignments/chatbot
+"""
+
 """ A neural chatbot using sequence to sequence model with
 attentional decoder. 
 

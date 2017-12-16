@@ -1,3 +1,10 @@
+"""
+This is for ECE750 course project.
+Modified by Nan Li. 20171215
+The original code:
+https://github.com/chiphuyen/stanford-tensorflow-tutorials/tree/master/assignments/chatbot
+"""
+
 """ A neural chatbot using sequence to sequence model with
 attentional decoder. 
 
@@ -66,7 +73,7 @@ ENC_VOCAB = 25000
 DEC_VOCAB = 25000
 
 PS_HOSTS = "localhost:2222"
-WORKER_HOSTS = "localhost:2223"
+WORKER_HOSTS = "localhost:2223,localhost:2224"
 
 JOB_NAME = "ps"
 TASK_INDEX = 0
