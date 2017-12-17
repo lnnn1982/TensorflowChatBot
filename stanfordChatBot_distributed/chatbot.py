@@ -3,9 +3,7 @@ This is for ECE750 course project.
 Modified by Nan Li. 20171215
 The original code:
 https://github.com/chiphuyen/stanford-tensorflow-tutorials/tree/master/assignments/chatbot
-"""
-
-""" A neural chatbot using sequence to sequence model with
+ A neural chatbot using sequence to sequence model with
 attentional decoder. 
 
 This is based on Google Translate Tensorflow model 
@@ -147,11 +145,14 @@ def _eval_test_set(sess, model, test_buckets):
 def train():
     """ Train the bot """
     print('train begin.' + time.ctime() + "," + config.getThreadId())
+            
+    sessionconfig = tf.ConfigProto()
+    sessionconfig.gpu_options.allow_growth = True
     
     ps_hosts = config.PS_HOSTS.split(",")
     worker_hosts = config.WORKER_HOSTS.split(",")
     cluster = tf.train.ClusterSpec({"ps": ps_hosts, "worker": worker_hosts})
-    server = tf.train.Server(cluster,job_name=config.JOB_NAME,task_index=config.TASK_INDEX)
+    server = tf.train.Server(cluster,job_name=config.JOB_NAME,task_index=config.TASK_INDEX, config=sessionconfig)
     
     if config.JOB_NAME == "ps":
         print("server join")
@@ -180,8 +181,8 @@ def train():
                             saver=saver,
                             global_step=model.global_step,
                             save_model_secs=60)    
-        
-        with sv.prepare_or_wait_for_session(server.target) as sess:
+
+        with sv.prepare_or_wait_for_session(master=server.target, config=sessionconfig) as sess:
             
             print('Running session' + time.ctime() + "," + config.getThreadId())
             
