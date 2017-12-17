@@ -3,9 +3,8 @@ This is for ECE750 course project.
 Modified by Nan Li. 20171215
 The original code:
 https://github.com/chiphuyen/stanford-tensorflow-tutorials/tree/master/assignments/chatbot
-"""
 
-""" A neural chatbot using sequence to sequence model with
+A neural chatbot using sequence to sequence model with
 attentional decoder. 
 
 This is based on Google Translate Tensorflow model 
@@ -148,7 +147,7 @@ def train():
     """ Train the bot """
     print('train begin.' + time.ctime() + "," + config.getThreadId())
     
-    with tf.device('/cpu:0'):
+    with tf.device('/gpu:0'):
         test_buckets, data_buckets, train_buckets_scale = _get_buckets()
         # in train mode, we need to create the backward path, so forwrad_only is False
         model = ChatBotModel(False, config.BATCH_SIZE)
@@ -156,7 +155,9 @@ def train():
     
         saver = tf.train.Saver()
     
-        with tf.Session() as sess:
+        sessionconfig = tf.ConfigProto()
+        sessionconfig.gpu_options.allow_growth = True
+        with tf.Session(config=sessionconfig) as sess:
             
             print('Running session' + time.ctime() + "," + config.getThreadId())
             sess.run(tf.global_variables_initializer())
